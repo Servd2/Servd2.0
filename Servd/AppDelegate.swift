@@ -7,15 +7,52 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var storyboard = UIStoryboard(name: "Main", bundle: nil)
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        Parse.setApplicationId("Instagram", clientKey: "du3dn238fyb38oudn1io23yduod2")
+        
+        Parse.initializeWithConfiguration(
+            ParseClientConfiguration(block: { (configuration:ParseMutableClientConfiguration) -> Void in
+                configuration.applicationId = "Instagram"
+                configuration.clientKey = "du3dn238fyb38oudn1io23yduod2"
+                configuration.server = "https://instagramdemoapp.herokuapp.com/parse"
+            })
+        )
+        
+        if PFUser.currentUser() != nil {
+            
+            let pvc = storyboard.instantiateViewControllerWithIdentifier("TBC") as! UITabBarController
+            
+            window?.rootViewController = pvc
+            
+            print("Current User: \(PFUser.currentUser())")
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserverForName("UserDidLogout", object: nil, queue: NSOperationQueue.mainQueue()) { (NSNotification) ->
+            Void in
+            let mvc = self.storyboard.instantiateInitialViewController()
+            
+            self.window?.rootViewController = mvc
+            }
+        
+        let pageControl = UIPageControl.appearance()
+        
+        pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
+        
+        pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
+        
+        pageControl.backgroundColor = UIColor.whiteColor()
+        
         return true
     }
 
