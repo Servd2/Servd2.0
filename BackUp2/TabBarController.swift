@@ -1,19 +1,17 @@
 //
-//  TicketViewController.swift
-//  Servd
+//  TabBarController.swift
+//  DummyServdDifferent
 //
-//  Created by Saul Soto on 4/12/16.
+//  Created by Saul Soto on 5/2/16.
 //  Copyright © 2016 CodePath - Servd. All rights reserved.
 //
 
 import UIKit
 
-class TicketViewController: UIViewController {
-    @IBOutlet weak var lblGenerator: UILabel!
+class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.lblGenerator.text = String(random()%1000)
 
         // Do any additional setup after loading the view.
     }

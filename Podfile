@@ -5,6 +5,7 @@
 
 target 'Servd' do
     pod 'Parse'
+    #pod 'Stripe'
 
 end
 

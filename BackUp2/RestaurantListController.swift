@@ -11,6 +11,18 @@ import UIKit
 class RestaurantListController: UIViewController, UICollectionViewDelegate,  UICollectionViewDataSource, UISearchBarDelegate {
     
     var items = ["Cosi", "SubCo", "FastFood"]
+    
+    var name: AnyObject? {
+        get {
+            return NSUserDefaults.standardUserDefaults().objectForKey("name")
+        }
+        
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue!, forKey: "name")
+            
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
 
     @IBOutlet weak var collectionView: UICollectionView!
    
@@ -22,6 +34,7 @@ class RestaurantListController: UIViewController, UICollectionViewDelegate,  UIC
         super.viewDidLoad()
         
         collectionView.dataSource = self
+        collectionView.delegate = self
         searchBar.delegate = self
         filteredData = items
         
@@ -47,7 +60,20 @@ class RestaurantListController: UIViewController, UICollectionViewDelegate,  UIC
         
         cell.restaurantName?.text = filteredData[indexPath.item]
         
-        cell.backgroundColor = UIColor.yellowColor()
+        if(indexPath.item == 0 )
+        {
+            cell.backgroundColor = UIColor.greenColor()
+            
+        }
+        else if(indexPath.item == 1)
+        {
+            cell.backgroundColor = UIColor.redColor()
+        }
+        else
+        {
+            cell.backgroundColor = UIColor.yellowColor()
+        }
+        //cell.backgroundColor = UIColor.redColor()
         cell.layer.borderColor = UIColor.grayColor().CGColor
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 8
@@ -63,9 +89,30 @@ class RestaurantListController: UIViewController, UICollectionViewDelegate,  UIC
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
             // handle tap events
             print("You selected cell #\(indexPath.item)!")
+        
+        name = items[indexPath.row]
     }
     
-    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        // When there is no text, filteredData is the same as the original data
+        if searchText.isEmpty {
+            filteredData = items
+        } else {
+            // The user has entered text into the search box
+            // Use the filter method to iterate over all items in the data array
+            // For each item, return true if the item should be included and false if the
+            // item should NOT be included
+            filteredData = items.filter({(dataItem: String) -> Bool in
+                // If dataItem matches the searchText, return true to include it
+                if dataItem.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil {
+                    return true
+                } else {
+                    return false
+                }
+            })
+        }
+        collectionView.reloadData()
+    }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         self.searchBar.showsCancelButton = true

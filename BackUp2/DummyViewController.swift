@@ -35,6 +35,8 @@ class DummyViewController: UIViewController {
         segmentedBar.initUI()
         segmentedBar.selectedSegmentIndex = TabIndex.FirstChildTab.rawValue
         displayCurrentTab(TabIndex.FirstChildTab.rawValue)
+        /*segmentedBar.selectedSegmentIndex = TabIndex.SecondChildTab.rawValue
+        displayCurrentTab(TabIndex.SecondChildTab.rawValue)*/
 
     }
 
@@ -71,8 +73,8 @@ class DummyViewController: UIViewController {
         switch index {
         case TabIndex.FirstChildTab.rawValue :
             vc = firstChildTabVC
-        //case TabIndex.SecondChildTab.rawValue :
-            //vc = secondChildTabVC
+        case TabIndex.SecondChildTab.rawValue :
+            vc = secondChildTabVC
         default:
             return nil
         }
